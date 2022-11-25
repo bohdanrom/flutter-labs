@@ -9,6 +9,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  static const groups = ["КБ-41", "КБ-42", "КБ-43", "КБ-44"];
+  String group = groups.first;
   final inputControllerForFirstName = TextEditingController();
   final inputControllerForLastName = TextEditingController();
 
@@ -39,15 +41,31 @@ class MyHomePageState extends State<MyHomePage> {
             ),
             Container(
                 margin: const EdgeInsets.only(top: 20),
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  onChanged: (String? changedValue) {
+                    group = changedValue!;
+                    setState(() {
+                      group;
+                    });
+                  },
+                  value: group,
+                  items: groups.map((String value) {
+                    return DropdownMenuItem<String>(
+                        value: value, child: Text(value));
+                  }).toList(),
+                )),
+            Container(
+                margin: const EdgeInsets.only(top: 20),
                 child: MaterialButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => WelcomePage(
-                                  inputControllerForFirstName.text,
-                                  inputControllerForLastName.text,
-                                )));
+                                inputControllerForFirstName.text,
+                                inputControllerForLastName.text,
+                                group)));
                   },
                   color: Colors.green,
                   child: const Text('Sign in'),
